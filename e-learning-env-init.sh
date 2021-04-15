@@ -1,6 +1,5 @@
 #! /bin/bash
 
-# shell script directory
 shellPWD="$(pwd)"
 
 bashBranch='2004-psql'
@@ -67,4 +66,4 @@ if [[ ! -f "${shellPWD}/docker-compose.yml" ]]; then
 fi
 
 webcont="$(docker-compose ps -q moodle)"
-wget -O - https://raw.githubusercontent.com/jasonliancatalyst/docker-env-init/main/container-setup.sh | docker exec -ti $webcont bash
+wget -O - https://raw.githubusercontent.com/jasonliancatalyst/docker-env-init/master/container-setup.sh | docker exec -i $webcont bash -
