@@ -67,3 +67,5 @@ fi
 
 webcont="$(docker-compose ps -q moodle)"
 wget -O - https://raw.githubusercontent.com/jasonliancatalyst/docker-env-init/master/container-setup.sh | docker exec -i $webcont bash -
+
+sudo chown ${USER}:${USER} ./siteroot
