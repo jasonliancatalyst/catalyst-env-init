@@ -1,8 +1,9 @@
-# Catalyst Moodle Environment Setup Script
+# Moodle Environment Setup Script
 
 Scripts to set up the local Moodle environment.
 
 These scripts make minimum interaction possible during the Moodle environment setup process.
+
 ## Instructions
 
 1. Clone the repo to your home directory
@@ -96,7 +97,7 @@ These scripts make minimum interaction possible during the Moodle environment se
 
 ## Install vs code docker extension
 
-Highly recommend that `Docker` extension is installed:
+Highly recommend that `Docker` extension is installed for vs code:
 
 https://marketplace.visualstudio.com/items?itemName=ms-azuretools.vscode-docker
 

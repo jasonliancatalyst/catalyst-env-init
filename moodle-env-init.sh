@@ -70,13 +70,15 @@ echo "You selected base docker $baseDockerBranch"
 echo "Clone the base environment docker repo: git clone -b $baseDockerBranch https://github.com/catalyst/docker_moodle.git ."
 git clone -b $baseDockerBranch https://github.com/catalyst/docker_moodle.git . && \
 
+echo "docker-compose up -d --force-recreate --build"
+docker-compose down && docker-compose up -d --force-recreate --build && \
+
+# Get the container ID string.
+webcont="$(docker-compose ps -q moodle)"
+
 # Environment variables for XDEBUG.
 xdebuEnvConf='XDEBUG_CONFIG="remote_host=172.17.0.1 remote_port=9000"'
 xdebugIdeConf='PHP_IDE_CONFIG="serverName=http://localhost"'
-
-echo "docker-compose up -d --force-recreate --build"
-docker-compose up -d --force-recreate --build
-webcont="$(docker-compose ps -q moodle)"
 docker exec -t $webcont bash -c "echo ${xdebuEnvConf} >> /etc/environment"
 docker exec -t $webcont bash -c "echo ${xdebugIdeConf} >> /etc/environment"
 
