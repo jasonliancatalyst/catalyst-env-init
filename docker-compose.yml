@@ -1,0 +1,74 @@
+version: '3.7'
+
+services:
+  moodle:
+    build: ${MOODLE_DOCKERFILE_BASE_PATH}/${BASE_DOCKER_ENV_BRANCH}/docker/moodle
+    ports:
+      - "80:80"
+    volumes:
+      - ./siteroot:/siteroot
+    environment:
+      XDEBUG_CONFIG: 'remote_host=172.17.0.1 remote_port=9000'
+      PHP_IDE_CONFIG: 'serverName=http://localhost'
+    container_name: ${MOODLE_BRANCH}_moodle
+    hostname: ${MOODLE_BRANCH}_moodle
+    networks:
+      moodle: {}
+
+  db:
+    image: postgres:9.6
+    restart: always
+    environment:
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-password}
+      POSTGRES_DB: ${POSTGRES_DB:-moodle}
+      POSTGRES_USER: ${POSTGRES_USER:-moodle_user}
+    volumes:
+      - '${REPO_ROOT_PATH}/hostdata:/var/hostdata'
+      - '/var/docker_db/${MOODLE_BRANCH:-pgsql}/:/var/lib/postgresql/data'
+    ports:
+      - "0.0.0.0:5432:5432"
+    container_name: ${MOODLE_BRANCH}_db
+    hostname: ${MOODLE_BRANCH}_db
+    networks:
+      moodle: {}
+
+  pgadmin:
+    image: dpage/pgadmin4
+    environment:
+      PGADMIN_DEFAULT_EMAIL: ${PGADMIN_DEFAULT_EMAIL:-pgadmin4@pgadmin.org}
+      PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_DEFAULT_PASSWORD:-admin}
+      PGADMIN_CONFIG_SERVER_MODE: 'False'
+    volumes:
+      - pgadmin:/root/.pgadmin
+    ports:
+      - "${PGADMIN_PORT:-5050}:80"
+    container_name: ${MOODLE_BRANCH}_pgadmin
+    hostname: ${MOODLE_BRANCH}_pgadmin
+    networks:
+      moodle: {}
+    restart: unless-stopped
+
+  test-db:
+    image: postgres:9.6
+    restart: always
+    environment:
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: moodle
+      POSTGRES_USER: moodle_user
+    container_name: dbtest_${MOODLE_BRANCH}
+    hostname: test-db
+    networks:
+      moodle:
+        aliases:
+          - test-db
+    volumes:
+      - 'testdb:/var/lib/postgresql/data'
+
+volumes:
+  testdb:
+  pgadmin:
+
+networks:
+  moodle:
+    name: ${MOODLE_BRANCH}
+    driver: bridge

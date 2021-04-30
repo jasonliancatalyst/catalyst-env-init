@@ -2,7 +2,7 @@
 
 Scripts to set up the local Moodle environment.
 
-These scripts make minimum interaction possible during the Moodle environment setup process.
+It will only need minimum interaction during the Moodle environment setup process.
 
 ## Instructions
 
@@ -22,12 +22,10 @@ These scripts make minimum interaction possible during the Moodle environment se
     sudo chmod +x *.sh
     ```
 
-2. Create your project directory, and run the script inside it.
+2. Enter the directory that contains these shell scripts, then run the script to enter interactive mode:
 
     ```
-    cd ~/
-
-    mkdir your_directory && cd your_directory
+    cd ~/catalyst-env-init/
 
     ~/catalyst-env-init/moodle-env-init.sh
 
@@ -36,53 +34,53 @@ These scripts make minimum interaction possible during the Moodle environment se
     Alternatively, you can use parameters so it'll minimise the input:
 
     ```
-    ~/catalyst-env-init/moodle-env-init.sh [base_docker_environment_branch] [moodle_repo_url] [moodle_branch]
+    ~/catalyst-env-init/e-learning-env-init.sh [clientIdentifier] [base_branch] [moodle_git_url] [moodle_branch]
     ```
 
     Eg.
-
     ```
-    ~/catalyst-env-init/moodle-env-init.sh 2004-psql https://github.com/moodle/moodle.git your_branch_name
+    ~/catalyst-env-init/moodle-env-init.sh client_-_name 2004-psql https://github.com/moodle/moodle.git your_branch_name
     ```
+3. If using interactive mode (without parameters), it'll ask you to response to the prompot.
 
-3. It'll ask you to select the docker environment, currently it only supports psql environments:
+   - Select the docker environment, currently it only supports psql environments:
 
-    ```
-    1) 1804-psql
-    2) 2004-psql
-    3) Quit
-    Please input your base environment branch option and press enter [option number only]:
-    ```
+        ```
+        1) 1804-psql
+        2) 2004-psql
+        3) Quit
+        Please input your base environment branch option and press enter [option number only]:
+        ```
 
-4. Input number `1`, `2` or `3` to pick from one of the options to proceed.
+   - Input number `1`, `2` or `3` to pick from one of the options to proceed.
 
-5. The next step it'll ask you the moodle project repo:
+   - The next step it'll ask you the moodle project repo:
 
-    `
-    Please enter your site repo git URL:
-    `
+        `
+        Please enter your site repo git URL:
+        `
 
-    This is your full git repo URL, eg.: `https://github.com/moodle/moodle.git`
+        This is your full git repo URL, eg.: `https://github.com/moodle/moodle.git`
 
-6. The next step, enter your branch that you are going to use:
+   - The next step, enter your branch that you are going to use:
 
-    `
-    Please enter your site repo branch name:
-    `
+        `
+        Please enter your site repo branch name:
+        `
 
-    Eg. `master`, `your_branch_name`.
+        Eg. `master`, `your_branch_name`.
 
-    It can take a while, just wait for it to proceed.
+        It can take a while, just wait for it to proceed.
 
-7. It'll then ask you to proceed with the commands running inside the moodle container:
+    - It'll then ask you to proceed with the commands running inside the moodle container:
 
-    `
-    Do you wish to run init jobs (composer install/phpunit init) inside container? [Y/N]
-    `
+        `
+        Do you wish to run init jobs (composer install/phpunit init) inside container? [Y/N]
+        `
 
-    Enter `Y` to proceed automatic setup, or otherwise enter `N`.
+        Enter `Y` to proceed automatic setup, or otherwise enter `N`.
 
-8. Wait for it to complete. It may ask you to enter your Ubuntu password to run `chmod`/`chown`.
+4. Wait for it to complete. It may ask you to enter your Ubuntu password to run `sudo`.
 
    From this step, it should set up everything like the composer dependencies, phpunit, etc.
 
@@ -91,13 +89,13 @@ These scripts make minimum interaction possible during the Moodle environment se
    user name: `admin`
    password: `soMePass123_`
 
-9. The environment should be all set up.
+5. The environment should be all set up.
 
     Now you can visit the local moodle site from http://localhost.
 
-## Install vs code docker extension
+## Install VS Code docker extension
 
-Highly recommend that `Docker` extension is installed for vs code:
+Highly recommend that `Docker` extension is installed for VS Code:
 
 https://marketplace.visualstudio.com/items?itemName=ms-azuretools.vscode-docker
 

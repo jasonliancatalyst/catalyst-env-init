@@ -1,0 +1,57 @@
+version: '3.7'
+
+services:
+  moodle:
+    build: ${MOODLE_DOCKERFILE_BASE_PATH}/${BASE_DOCKER_ENV_BRANCH}/docker/moodle
+    ports:
+      - "80:80"
+    volumes:
+      - ./siteroot:/siteroot
+    environment:
+      XDEBUG_CONFIG: 'remote_host=172.17.0.1 remote_port=9000'
+      PHP_IDE_CONFIG: 'serverName=http://localhost'
+    container_name: ${MOODLE_BRANCH}_moodle
+    hostname: ${MOODLE_BRANCH}_moodle
+    networks:
+      moodle: {}
+
+  db:
+    image: mysql:5.6
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: password
+      MYSQL_DATABASE: moodle
+      MYSQL_USER: moodle_user
+      MYSQL_PASSWORD: password
+    command: mysqld --innodb-file-format=Barracuda --innodb_file_per_table=1 --innodb_large_prefix=1 --max_allowed_packet=32M --innodb_log_file_size=512M --explicit_defaults_for_timestamp=1
+    volumes:
+      - '/var/docker_db/${MOODLE_BRANCH:-mysql}/:/var/lib/mysql'
+    container_name: ${MOODLE_BRANCH}_db
+    hostname: ${MOODLE_BRANCH}_db
+    networks:
+      moodle: {}
+
+  test-db:
+    image: mysql:5.6
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: password
+      MYSQL_DATABASE: moodle
+      MYSQL_USER: moodle_user
+      MYSQL_PASSWORD: password
+    command: mysqld --innodb-file-format=Barracuda --innodb_file_per_table=1 --innodb_large_prefix=1 --max_allowed_packet=32M --innodb_log_file_size=512M --explicit_defaults_for_timestamp=1
+    volumes:
+      - 'testdb:/var/lib/mysql'
+    networks:
+      moodle:
+        aliases:
+          - test-db
+
+volumes:
+  testdb:
+  pgadmin:
+
+networks:
+  moodle:
+    name: ${MOODLE_BRANCH}
+    driver: bridge
